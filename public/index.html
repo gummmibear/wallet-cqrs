@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
+  </head>
+  <body>
+
+  <div class="container">
+    <h1>Wallet</h1>
+    <button id="load" class="btn btn-default">Load</button>
+    <table
+            id="table"
+            class="table table-no-bordered"
+            data-toggle="table"
+            data-toolbar="#toolbar"
+            data-height="428"
+            data-detail-view="true"
+            data-detail-formatter="detailFormatter">>
+      <thead>
+      <tr>
+        <th data-field="transactionId" data-formatter="transactionIdFormatter">#ID</th>
+        <th data-field="amount">Amount</th>
+        <th data-field="title">Title</th>
+        <th data-field="dateTime">DateTime</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td data-field="transactionId">1</td>
+        <td data-field="amount">12</td>
+        <td data-field="title">Otto</td>
+        <td data-field="dateTime">2017</td>
+      </tr>
+      <tr>
+        <td data-field="transactionId">2</td>
+        <td data-field="amount">122</td>
+        <td data-field="title">Otto2</td>
+        <td data-field="dateTime">2016</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <button id="button" class="btn btn-default">updateRow</button>
+  </div>
+
+    <!-- jQuery first, then Tether, then Bootstrap JS. -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+
+  <script>
+    function transactionIdFormatter($transactionId) {
+      return '<b>' + $transactionId + '</b>';
+    }
+    function detailFormatter(index, row) {
+      var html = [];
+      var htm = '<form class="editTransaction" id="'+row.transactionId+'">'+
+                '<div class="form-group"> <label>Amount:</label>'+
+                '<input type="number" min="0.01" step="0.01" class="form-control amount" value="'+row.amount+'"> </div>'+
+                '<div class="form-group"> <label>Title:</label> <input type="text" class="form-control title" value="'+row.title+'"> </div>' +
+                '<div class="form-group"> <label>DateTime:</label> <input type="text" class="form-control dateTime" value="'+row.dateTime+'"> </div>' +
+                '<button type="submit" class="btn btn-default">Save</button>' +
+              '</form>';
+      console.log(row);
+      /*$.each(row, function (key, value) {
+      });*/
+      html.push(htm);
+      return html.join('');
+    }
+    $(document).on('submit', 'form.editTransaction', function(e){
+      e.preventDefault();
+      var amount = $("#" + e.target.id + " input.form-control.amount");
+      var title = $("#" + e.target.id + " input.form-control.title");
+      var dateTime = $("#" + e.target.id + " input.form-control.dateTime");
+
+
+      $.ajax({
+        url : "http://0.0.0.0:8081/transaction/" + e.target.id,
+        type: "POST",
+        data: JSON.stringify([
+          {id: 1, name: "Shahed"},
+          {id: 2, name: "Hossain"}
+        ]),
+        contentType: "application/json; charset=utf-8",
+        dataType   : "json",
+        success    : function(){
+          console.log("Pure jQuery Pure JS object");
+        }
+      });
+      console.log(amount.val(), dateTime.val());
+    });
+
+    $(document).ready(function () {
+      $.get("http://0.0.0.0:8081/user/transaction/list", function(data){
+          $table.bootstrapTable('load',data);
+      });
+    });
+    var $table = $('#table'), $button = $('#button'), $load = $('#load');
+    $(function () {
+      $load.click(function () {
+        /*console.log($table);
+        $table.bootstrapTable('updateRow', {
+          index: 0,
+          row: {
+            id: 66,
+            title: 'title change',
+            amount: '66',
+            dateTime: 'dateTime'
+          }
+        });*/
+        //console.log($table);
+        //$table.bootstrapTable('removeAll');
+      });
+    });
+
+
+  </script>
+  </body>
+</html>

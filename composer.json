@@ -1,0 +1,48 @@
+{
+    "name": "Wallet CQRS",
+    "description": "Simple wallet app using CQRS",
+    "type": "project",
+    "homepage": "https://github.com/gummibear/wallet-cqrs",
+    "license": "BSD-3-Clause",
+    "require": {
+        "php": "^5.6 || ^7.0",
+        "roave/security-advisories": "dev-master",
+        "zendframework/zend-expressive": "^1.0",
+        "zendframework/zend-expressive-helpers": "^2.0",
+        "zendframework/zend-stdlib": "^2.7 || ^3.0",
+        "zendframework/zend-expressive-zendrouter": "^1.0",
+        "zendframework/zend-servicemanager": "^2.7.3 || ^3.0",
+        "broadway/broadway": "^0.10.0",
+        "doctrine/dbal": "^2.5",
+        "mongodb/mongodb": "^1.0.0",
+        "zendframework/zend-expressive-platesrenderer": "^1.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.0",
+        "squizlabs/php_codesniffer": "^2.3",
+        "filp/whoops": "^1.1 || ^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/App/",
+            "Domain\\": "src/Domain/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "AppTest\\": "test/AppTest/"
+        }
+    },
+    "scripts": {
+        "check": [
+            "@cs-check",
+            "@test"
+        ],
+        "cs-check": "phpcs",
+        "cs-fix": "phpcbf",
+        "serve": "php -S 0.0.0.0:8084 -t public public/index.php",
+        "test": "phpunit --colors=always",
+        "test-coverage": "phpunit --colors=always --coverage-clover clover.xml",
+        "upload-coverage": "coveralls -v"
+    }
+}
