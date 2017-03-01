@@ -2,11 +2,13 @@
 
 namespace Domain\Wallet\ReadModel;
 
-
 use Broadway\ReadModel\ReadModelInterface;
 
 class Transaction implements ReadModelInterface, \JsonSerializable
 {
+    const INCOME_TYPE = 1;
+    const OUTCOME_TYPE = -1;
+
     private $transactionId;
     private $userId;
     private $amount;
@@ -21,8 +23,8 @@ class Transaction implements ReadModelInterface, \JsonSerializable
         int $type,
         string $title,
         \DateTime $dateTime
-    )
-    {
+    ) {
+
         $this->transactionId = $transactionId;
         $this->userId = $userId;
         $this->amount= $amount;
@@ -87,12 +89,12 @@ class Transaction implements ReadModelInterface, \JsonSerializable
      * which is a value of any type other than a resource.
      * @since 5.4.0
      */
-    function jsonSerialize()
+    public function jsonSerialize()
     {
         return [
             'transactionId' => (string) $this->transactionId,
             'userId' => (string) $this->userId,
-            'amount' => \Domain\Wallet\Helper\MoneyHelper::formatMoney($this->amount*(int)$this->type),
+            'amount' => \Domain\Wallet\Helper\MoneyHelper::formatMoney($this->amount),
             'type' => $this->type,
             'title' => $this->title,
             'dateTime' => $this->dateTime->format(DATE_ISO8601)

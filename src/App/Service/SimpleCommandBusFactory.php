@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-
 use Broadway\CommandHandling\SimpleCommandBus;
 use Domain\Wallet\Commands\MoneyCommandHandler;
 use Domain\Wallet\Commands\TransactionCommandHandler;

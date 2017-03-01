@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gbear
- * Date: 24.02.17
- * Time: 00:42
- */
 
 namespace Domain\Wallet\ReadModel;
-
 
 use Broadway\ReadModel\ReadModelInterface;
 use Domain\Wallet\Helper\MoneyHelper;
@@ -31,12 +24,16 @@ class Wallet implements ReadModelInterface, \JsonSerializable
     public function setAccountBalance($accountBalance)
     {
         $this->accountBalance = $accountBalance;
-        $this->transactionCount++;
     }
 
     public function setTransactionCount($transactionCount)
     {
         $this->transactionCount = $transactionCount;
+    }
+
+    public function incrementTransactionCount()
+    {
+        $this->transactionCount++;
     }
 
     /**
@@ -84,7 +81,7 @@ class Wallet implements ReadModelInterface, \JsonSerializable
      * which is a value of any type other than a resource.
      * @since 5.4.0
      */
-    function jsonSerialize()
+    public function jsonSerialize()
     {
         return [
             'userId' => (string) $this->userId,

@@ -1,12 +1,7 @@
 <?php
 
 namespace Domain\Wallet\Event;
-/**
- * Created by PhpStorm.
- * User: gbear
- * Date: 17.02.17
- * Time: 00:49
- */
+
 class MoneyWasAddedEvent extends MoneyEvent
 {
     /**

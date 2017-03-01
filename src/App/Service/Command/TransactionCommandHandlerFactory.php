@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gbear
- * Date: 26.02.17
- * Time: 23:55
- */
 
 namespace App\Service\Command;
-
 
 use Domain\Wallet\Commands\TransactionCommandHandler;
 use Domain\Wallet\EventSourcing\TransactionRepository;

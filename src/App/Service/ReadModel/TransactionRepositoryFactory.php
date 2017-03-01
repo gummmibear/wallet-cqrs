@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gbear
- * Date: 26.02.17
- * Time: 23:12
- */
 
 namespace App\Service\ReadModel;
-
 
 use Domain\Wallet\ReadModel\TransactionRepository;
 use Interop\Container\ContainerInterface;

@@ -12,9 +12,6 @@ class TransactionAmountChangeCommand extends TransactionCommand
         $this->amount = $amount;
     }
 
-    /**
-     * @return float
-     */
     public function getAmount(): int
     {
         return $this->amount;

@@ -2,7 +2,6 @@
 
 namespace Domain\Wallet\Commands;
 
-
 class TransactionTitleChangeCommand extends TransactionCommand
 {
     private $title;

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gbear
- * Date: 26.02.17
- * Time: 23:45
- */
 
 namespace App\Service\EventStore;
 

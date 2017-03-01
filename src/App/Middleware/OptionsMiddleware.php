@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gbear
- * Date: 27.02.17
- * Time: 23:39
- */
 
 namespace App\Middleware;
-
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

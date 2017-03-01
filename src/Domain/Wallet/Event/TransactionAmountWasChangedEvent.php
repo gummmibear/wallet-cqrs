@@ -1,6 +1,7 @@
 <?php
 
 namespace Domain\Wallet\Event;
+
 /**
  * Created by PhpStorm.
  * User: gbear
@@ -11,18 +12,21 @@ class TransactionAmountWasChangedEvent extends TransactionEvent
 {
     private $amount;
     private $newAmount;
+    private $type;
 
     public function __construct(
         string $transactionId,
         int $userId,
         int $amount,
-        int $newAmount
-    )
-    {
+        int $newAmount,
+        int $type
+    ) {
+
         parent::__construct($transactionId, $userId);
 
         $this->amount = $amount;
         $this->newAmount = $newAmount;
+        $this->type = $type;
     }
 
     /**
@@ -41,6 +45,11 @@ class TransactionAmountWasChangedEvent extends TransactionEvent
         return $this->newAmount;
     }
 
+    public function getTransactionType(): int
+    {
+        return $this->type;
+    }
+
     /**
      * @return mixed The object instance
      */
@@ -50,7 +59,8 @@ class TransactionAmountWasChangedEvent extends TransactionEvent
             $data['transactionId'],
             $data['userId'],
             $data['amount'],
-            $data['newAmount']
+            $data['newAmount'],
+            $data['type']
         );
     }
 
@@ -63,7 +73,8 @@ class TransactionAmountWasChangedEvent extends TransactionEvent
             'transactionId' => $this->transactionId,
             'userId' => $this->userId,
             'amount' => $this->amount,
-            'newAmount' => $this->newAmount
+            'newAmount' => $this->newAmount,
+            'type' => $this->type
         ];
     }
 }

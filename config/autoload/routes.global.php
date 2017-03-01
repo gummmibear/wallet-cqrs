@@ -11,6 +11,7 @@ return [
             \App\Action\TransactionListAction::class => \App\Action\TransactionListActionFactory::class,
             \App\Action\IndexAction::class => \App\Action\IndexActionFactory::class,
             \App\Action\WalletAction::class => \App\Action\WalletActionFactory::class,
+            \App\Action\TransactionStatsAction::class => \App\Action\TransactionStatsActionFactory::class,
         ],
     ],
 
@@ -43,6 +44,12 @@ return [
             'name' => 'transaction.list',
             'path' => '/user/transaction/list',
             'middleware' => App\Action\TransactionListAction::class,
+            'allowed_methods' => ['GET'],
+        ],
+        [
+            'name' => 'transaction.stats',
+            'path' => '/user/:userId/transaction/stats',
+            'middleware' => App\Action\TransactionStatsAction::class,
             'allowed_methods' => ['GET'],
         ]
     ],

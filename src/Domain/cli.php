@@ -4,7 +4,7 @@ chdir(dirname(__DIR__));
 require '../vendor/autoload.php';
 
 const USER_ID = 22;
-const TRANSACTION_ID = '58b34682aba23';
+const TRANSACTION_ID = '58b5d3a310529';
 const PRECISION = 100;
 
 $params = [
@@ -48,10 +48,9 @@ $commandBus = new \Broadway\CommandHandling\SimpleCommandBus();
 
 $commandBus->subscribe($commendHandler);
 $commandBus->subscribe($transactionCommandHandler);
-$command = new \Domain\Wallet\Commands\AddMoneyCommand(uniqid(), USER_ID, $argv[1] * PRECISION, 'title++ ' . $argv[1]);
+//$command = new \Domain\Wallet\Commands\AddMoneyCommand(uniqid(), USER_ID, $argv[1] * PRECISION, 'title++ ' . $argv[1]);
 //$command = new \Domain\Wallet\Commands\SubMoneyCommand(uniqid(), USER_ID, 7.2 * PRECISION, 'title--');
 //$command = new \Domain\Wallet\Commands\TransactionTitleChangeCommand(TRANSACTION_ID, USER_ID, 'newTitle =12');
 //$command = new \Domain\Wallet\Commands\TransactionAmountChangeCommand(TRANSACTION_ID, USER_ID, $argv[1] * PRECISION);
 //$commandBus->dispatch($command);
 $commandBus->dispatch($command);
-

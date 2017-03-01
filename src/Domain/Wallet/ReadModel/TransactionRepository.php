@@ -2,11 +2,12 @@
 
 namespace Domain\Wallet\ReadModel;
 
-
 use Broadway\ReadModel\RepositoryInterface;
 use Broadway\ReadModel\ReadModelInterface;
 use MongoDB\Collection;
+use MongoDB\Driver\Cursor;
 use MongoDB\Driver\Exception\BulkWriteException;
+use MongoDB\Model\BSONDocument;
 
 class TransactionRepository implements RepositoryInterface
 {
@@ -22,7 +23,6 @@ class TransactionRepository implements RepositoryInterface
         try {
             $this->collection->insertOne($data->serialize());
         } catch (BulkWriteException $exception) {
-
             $this->collection->updateOne(
                 ['_id'=>$data->serialize()['_id']],
                 ['$set'=>$data->serialize()]
@@ -78,6 +78,24 @@ class TransactionRepository implements RepositoryInterface
         }
 
         return $transactionsObj;
+    }
+
+    public function getUserTransactionStatsByUserIdAndTransactionType(string $userId, int $transactionType = 1)
+    {
+        $userStats = 0;
+
+        /** @var Cursor $stats */
+        $stats = $this->collection->aggregate([
+            ['$match'=>['userId'=>$userId, 'type'=>$transactionType]],
+            ['$group'=>['_id'=>'$userId', 'total'=>['$sum'=>'$amount']]]
+        ]);
+
+        /** @var BSONDocument $stat */
+        foreach ($stats as $stat) {
+            $userStats = $stat->getArrayCopy()['total'];
+        }
+
+        return $userStats;
     }
 
     /**

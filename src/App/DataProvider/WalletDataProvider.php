@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gbear
- * Date: 28.02.17
- * Time: 02:28
- */
 
 namespace App\DataProvider;
-
 
 use Domain\Wallet\ReadModel\WalletRepository;
 

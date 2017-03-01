@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-
 use Broadway\EventHandling\SimpleEventBus;
 use Domain\Wallet\Listeners\TransactionListener;
 use Domain\Wallet\Listeners\WalletListener;

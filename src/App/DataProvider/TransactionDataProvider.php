@@ -2,6 +2,8 @@
 
 namespace App\DataProvider;
 
+use Domain\Wallet\Helper\MoneyHelper;
+use Domain\Wallet\ReadModel\Transaction;
 use Domain\Wallet\ReadModel\TransactionRepository;
 
 class TransactionDataProvider
@@ -21,5 +23,18 @@ class TransactionDataProvider
     public function getByUserId(string $userId)
     {
         return $this->transactionRepository->findBy(['userId'=>$userId]);
+    }
+
+    public function getStats(string $userId)
+    {
+        $income = $this->transactionRepository
+            ->getUserTransactionStatsByUserIdAndTransactionType($userId, Transaction::INCOME_TYPE);
+        $outcome = $this->transactionRepository
+            ->getUserTransactionStatsByUserIdAndTransactionType($userId, Transaction::OUTCOME_TYPE);
+
+        return [
+            'income' => MoneyHelper::formatMoney($income),
+            'outcome' => MoneyHelper::formatMoney($outcome),
+        ];
     }
 }

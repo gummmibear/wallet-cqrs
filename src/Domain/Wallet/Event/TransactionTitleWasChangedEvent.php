@@ -2,12 +2,6 @@
 
 namespace Domain\Wallet\Event;
 
-/**
- * Created by PhpStorm.
- * User: gbear
- * Date: 17.02.17
- * Time: 01:07
- */
 class TransactionTitleWasChangedEvent extends TransactionEvent
 {
     private $title;

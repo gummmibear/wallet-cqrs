@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gbear
- * Date: 17.02.17
- * Time: 01:55
- */
 
 namespace Domain\Wallet;
 
@@ -36,43 +30,26 @@ class Wallet extends EventSourcedAggregateRoot
     {
         $this->userId = $event->getUserId();
         $this->accountBalance += $event->getAmount();
-        $this->transactionCount++;
+        $this->transactionCount+=1;
     }
 
     public function applyMoneyWasSubtractedEvent(MoneyWasSubtractedEvent $event)
     {
         $this->userId = $event->getUserId();
         $this->accountBalance -= $event->getAmount();
-        $this->transactionCount++;
+        $this->transactionCount+=1;
     }
 
     public function applyTransactionAmountWasChangedEvent(TransactionAmountWasChangedEvent $event)
     {
         $this->userId = $event->getUserId();
-        $diff = ($event->getAmount() - $event->getNewAmount());
-        $this->accountBalance += ($diff*-1);
+        $accountBalance = $this->accountBalance;
+        $amount = $event->getAmount();
+        $newAmount = $event->getNewAmount();
+
+        $diff = ($amount - $newAmount) * ($event->getTransactionType() * -1);
+        $newAccountBalance = $accountBalance + $diff;
+
+        $this->accountBalance = $newAccountBalance;
     }
 }
-
-/**    public function registerEvent(MoneyEvent $event)
-    {
-        $this->events[] = $event;
-    }
-    public function getAccuntBalance()
-    {
-        $this->accountBalance = 0;
-
-        foreach ($this->events as $event) {
-            ///moooove to handlers !!
-            switch (get_class($event)) {
-                case MoneyWasAdded::class:
-                    $this->accountBalance+=$event->getAmount();
-                    break;
-
-                case MoneyWasSubtracted::class:
-                    $this->accountBalance-=$event->getAmount();
-                    break;
-            }
-        }
-    }
-*/

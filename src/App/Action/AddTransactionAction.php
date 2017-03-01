@@ -4,6 +4,7 @@ namespace App\Action;
 
 use Domain\Wallet\Commands\AddMoneyCommand;
 use Domain\Wallet\Commands\SubMoneyCommand;
+use Domain\Wallet\ReadModel\Transaction;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\JsonResponse;
@@ -15,7 +16,7 @@ class AddTransactionAction extends AbstractAction
         $json = $request->getAttribute('json');
         $userId = $request->getAttribute('userId');
 
-        if ((int)$json->type == 1) {
+        if ((int)$json->type == Transaction::INCOME_TYPE) {
             $command = new AddMoneyCommand(
                 uniqid(),
                 $userId,
@@ -25,7 +26,7 @@ class AddTransactionAction extends AbstractAction
             $this->commandBus->dispatch($command);
         }
 
-        if ((int)$json->type == -1) {
+        if ((int)$json->type == Transaction::OUTCOME_TYPE) {
             $command = new SubMoneyCommand(
                 uniqid(),
                 $userId,

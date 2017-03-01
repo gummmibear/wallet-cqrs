@@ -1,11 +1,11 @@
 {
     "name": "Wallet CQRS",
-    "description": "Simple wallet app using CQRS",
+    "description": "Simple wallet app using CQRS with broadway",
     "type": "project",
     "homepage": "https://github.com/gummibear/wallet-cqrs",
     "license": "BSD-3-Clause",
     "require": {
-        "php": "^5.6 || ^7.0",
+        "php": "^7.0",
         "roave/security-advisories": "dev-master",
         "zendframework/zend-expressive": "^1.0",
         "zendframework/zend-expressive-helpers": "^2.0",

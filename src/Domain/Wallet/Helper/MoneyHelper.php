@@ -1,12 +1,7 @@
 <?php
 
 namespace Domain\Wallet\Helper;
-/**
- * Created by PhpStorm.
- * User: gbear
- * Date: 27.02.17
- * Time: 22:01
- */
+
 class MoneyHelper
 {
     const PRECISSION = 100;

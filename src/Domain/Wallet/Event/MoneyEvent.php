@@ -1,14 +1,9 @@
 <?php
 
 namespace Domain\Wallet\Event;
+
 use Broadway\Serializer\SerializableInterface;
 
-/**
- * Created by PhpStorm.
- * User: gbear
- * Date: 17.02.17
- * Time: 01:17
- */
 abstract class MoneyEvent implements SerializableInterface
 {
     protected $transactionId;
@@ -23,8 +18,8 @@ abstract class MoneyEvent implements SerializableInterface
         int $amount,
         string $title,
         \DateTime $dateTime
-    )
-    {
+    ) {
+
         $this->transactionId = $transactionId;
         $this->userId = $userId;
         $this->amount = $amount;

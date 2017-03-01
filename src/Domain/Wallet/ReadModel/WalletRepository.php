@@ -1,4 +1,5 @@
 <?php
+
 namespace Domain\Wallet\ReadModel;
 
 use Broadway\ReadModel\ReadModelInterface;
@@ -20,7 +21,6 @@ class WalletRepository implements RepositoryInterface
         try {
             $this->collection->insertOne($data->serialize());
         } catch (BulkWriteException $exception) {
-
             $this->collection->updateOne(
                 ['_id'=>$data->serialize()['_id']],
                 ['$set'=>$data->serialize()]

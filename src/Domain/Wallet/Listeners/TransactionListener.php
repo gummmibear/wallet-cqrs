@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gbear
- * Date: 25.02.17
- * Time: 12:46
- */
 
 namespace Domain\Wallet\Listeners;
-
 
 use Broadway\Processor\Processor;
 use Broadway\ReadModel\RepositoryInterface;
@@ -23,15 +16,15 @@ class TransactionListener extends Processor
 
     public function __construct(
         RepositoryInterface $repository
-    )
-    {
+    ) {
+
         $this->repository = $repository;
     }
 
     public function handleTransactionWasAddedEvent(
         TransactionWasAddedEvent $transactionWasAddedEvent
-    )
-    {
+    ) {
+
         $transaction = new Transaction(
             $transactionWasAddedEvent->getTransactionId(),
             $transactionWasAddedEvent->getUserId(),
@@ -46,8 +39,8 @@ class TransactionListener extends Processor
 
     public function handleTransactionTitleWasChangedEvent(
         TransactionTitleWasChangedEvent $transactionTitleWasChangedEvent
-    )
-    {
+    ) {
+
         /** @var Transaction $transaction */
         $transaction = $this->repository->find($transactionTitleWasChangedEvent->getTransactionId());
 
@@ -62,8 +55,8 @@ class TransactionListener extends Processor
 
     public function handleTransactionDateWasChangedEvent(
         TransactionDateWasChangedEvent $transactionDateWasChangedEvent
-    )
-    {
+    ) {
+
         /** @var Transaction $transaction */
         $transaction = $this->repository->find($transactionDateWasChangedEvent->getTransactionId());
 
@@ -78,8 +71,8 @@ class TransactionListener extends Processor
 
     public function handleTransactionAmountWasChangedEvent(
         TransactionAmountWasChangedEvent $transactionAmountWasChangedEvent
-    )
-    {
+    ) {
+
         /** @var Transaction $transaction */
         $transaction = $this->repository->find($transactionAmountWasChangedEvent->getTransactionId());
 

@@ -7,7 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\JsonResponse;
 
-class TransactionListAction
+class TransactionStatsAction
 {
     private $transactionDataProvider;
 
@@ -18,10 +18,8 @@ class TransactionListAction
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next = null)
     {
-        $transaction = $this
-            ->transactionDataProvider
-            ->getByUserId(22);
+        $stats = $this->transactionDataProvider->getStats($request->getAttribute('userId'));
 
-        return new JsonResponse($transaction);
+        return new JsonResponse($stats);
     }
 }

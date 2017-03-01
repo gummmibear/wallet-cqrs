@@ -2,7 +2,6 @@
 
 namespace App\Service\EventStore;
 
-
 use Broadway\EventHandling\SimpleEventBus;
 use Domain\Wallet\EventSourcing\TransactionRepository;
 use Interop\Container\ContainerInterface;

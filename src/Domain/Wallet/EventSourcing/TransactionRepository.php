@@ -13,7 +13,7 @@ class TransactionRepository extends EventSourcingRepository
     public function __construct(
         EventStoreInterface $eventStore,
         EventBusInterface $eventBus
-    ){
+    ) {
         parent::__construct(
             $eventStore,
             $eventBus,

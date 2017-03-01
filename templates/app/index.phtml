@@ -13,24 +13,32 @@
 
 <div class="container">
     <h1>Wallet</h1>
-    <h3>
-        Account balance
-        <b id="accountBalance">0</b>
-        <small>Transaction count: <b id="transactionCount">0</b></small>
-    </h3>
-    <form class="form-inline" id="transaction">
-        <div class="form-group">
-            <label for="amount">Amount:</label>
-            <input type="number" class="form-control amount">
+    <div class="panel panel-default">
+        <div class="panel-body">
+                Account balance
+                <b id="accountBalance">0</b><span class="glyphicon glyphicon-btc"></span>
+                Transaction count: <b id="transactionCount">0</b>
+                Income: <b id="income">0</b> <span class="glyphicon glyphicon-btc"></span>
+                Outcome: <b id="outcome">0</b> <span class="glyphicon glyphicon-btc"></span>
         </div>
-        <div class="form-group">
-            <label for="title">Title:</label>
-            <input type="text" class="form-control title">
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form class="form-inline" id="transaction">
+                <div class="form-group">
+                    <label for="amount">Amount:</label>
+                    <input type="number" class="form-control amount">
+                </div>
+                <div class="form-group">
+                    <label for="title">Title:</label>
+                    <input type="text" class="form-control title">
+                </div>
+                <label class="radio-inline"><input type="radio" name="type" value="1">Income</label>
+                <label class="radio-inline"><input type="radio" name="type" value="-1">Outcome</label>
+                <button type="submit" class="btn btn-primary">Add Transaction</button>
+            </form>
         </div>
-        <label class="radio-inline"><input type="radio" name="type" value="1">Income</label>
-        <label class="radio-inline"><input type="radio" name="type" value="-1">Outcome</label>
-        <button type="submit" class="btn btn-primary">Add Transaction</button>
-    </form>
+    </div>
     <table
             id="table"
             class="table table-no-bordered"
@@ -42,24 +50,13 @@
         <thead>
         <tr>
             <th data-field="transactionId" data-formatter="transactionIdFormatter">#ID</th>
-            <th data-field="amount">Amount</th>
+            <th data-field="type" data-formatter="typeFormatter">Type</th>
+            <th data-field="amount" data-formatter="moneyFormatter">Amount</th>
             <th data-field="title">Title</th>
             <th data-field="dateTime">DateTime</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td data-field="transactionId">1</td>
-            <td data-field="amount">12</td>
-            <td data-field="title">Otto</td>
-            <td data-field="dateTime">2017</td>
-        </tr>
-        <tr>
-            <td data-field="transactionId">2</td>
-            <td data-field="amount">122</td>
-            <td data-field="title">Otto2</td>
-            <td data-field="dateTime">2016</td>
-        </tr>
         </tbody>
     </table>
 </div>
@@ -72,8 +69,21 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
 
 <script>
+    function moneyFormatter(money) {
+        return money + '&nbsp;<span class="glyphicon glyphicon-btc"></span>';
+    }
     function transactionIdFormatter($transactionId) {
         return '<b>' + $transactionId + '</b>';
+    }
+
+    function typeFormatter(type) {
+        if (type == 1) {
+            return '<span class="glyphicon glyphicon-plus"></span>';
+        }
+
+        if (type == -1) {
+            return '<span class="glyphicon glyphicon-minus"></span>';
+        }
     }
     function detailFormatter(index, row) {
         var html = [];
@@ -96,6 +106,12 @@
         obj.title = $("#transaction input.form-control.title").val();
         obj.type = $("#transaction input[name=type]:checked").val();
 
+        console.log(obj.type);
+        if (typeof obj.type === "undefined") {
+            alert('<b>Select Transaction type </b>');
+            return false;
+        }
+
         $.ajax({
             url : "/user/22/transaction",
             type: "POST",
@@ -110,6 +126,11 @@
                     $("#accountBalance").text(data.accountBalance);
                     $("#transactionCount").text(data.transactionCount);
                 });
+
+                $.get("/user/22/transaction/stats", function (data) {
+                    $("#income").text(data.income);
+                    $("#outcome").text(data.outcome);
+                })
             },
             error       : function (response) {
                 alert('add transaction error');
@@ -139,6 +160,10 @@
                     $("#accountBalance").text(data.accountBalance);
                     $("#transactionCount").text(data.transactionCount);
                 });
+                $.get("/user/22/transaction/stats", function (data) {
+                    $("#income").text(data.income);
+                    $("#outcome").text(data.outcome);
+                })
             },
             error : function (response) {
                 alert("edit transaction error")
@@ -155,27 +180,15 @@
            $("#accountBalance").text(data.accountBalance);
             $("#transactionCount").text(data.transactionCount);
         });
+
+        $.get("/user/22/transaction/stats", function (data) {
+            $("#income").text(data.income);
+            $("#outcome").text(data.outcome);
+
+        })
     });
 
     var $table = $('#table'), $button = $('#button'), $load = $('#load');
-    $(function () {
-        $load.click(function () {
-            /*console.log($table);
-             $table.bootstrapTable('updateRow', {
-             index: 0,
-             row: {
-             id: 66,
-             title: 'title change',
-             amount: '66',
-             dateTime: 'dateTime'
-             }
-             });*/
-            //console.log($table);
-            //$table.bootstrapTable('removeAll');
-        });
-    });
-
-
 </script>
 </body>
 </html>

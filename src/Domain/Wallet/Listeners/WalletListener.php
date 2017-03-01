@@ -2,7 +2,6 @@
 
 namespace Domain\Wallet\Listeners;
 
-
 use Broadway\Processor\Processor;
 use Broadway\ReadModel\RepositoryInterface;
 use Domain\Wallet\Event\MoneyWasAddedEvent;
@@ -30,6 +29,7 @@ class WalletListener extends Processor
         $wallet->setAccountBalance(
             $wallet->getAccountBalance() + $event->getAmount()
         );
+        $wallet->incrementTransactionCount();
 
         $this->repository->save($wallet);
     }
@@ -42,6 +42,7 @@ class WalletListener extends Processor
         $wallet->setAccountBalance(
             $wallet->getAccountBalance() - $event->getAmount()
         );
+        $wallet->incrementTransactionCount();
 
         $this->repository->save($wallet);
     }
@@ -50,15 +51,12 @@ class WalletListener extends Processor
     {
         /** @var Wallet $wallet */
         $wallet = $this->repository->find($event->getUserId());
-        if ($wallet->getTransactionCount() == 1) {
-            return;
-        }
         $accountBalance = $wallet->getAccountBalance();
 
         $amount = $event->getAmount();
         $newAmount = $event->getNewAmount();
 
-        $diff = ($amount - $newAmount)*-1;
+        $diff = ($amount - $newAmount) * ($event->getTransactionType() * -1);
         $newAccountBalance = $accountBalance + $diff;
 
         $wallet->setAccountBalance($newAccountBalance);

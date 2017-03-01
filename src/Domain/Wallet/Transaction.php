@@ -10,6 +10,9 @@ use Domain\Wallet\Event\TransactionWasAddedEvent;
 
 class Transaction extends EventSourcedAggregateRoot
 {
+    const INCOME_TYPE = 1;
+    const OUTCOME_TYPE = -1;
+
     public $transactionId;
     public $userId;
     public $amount;
@@ -23,8 +26,9 @@ class Transaction extends EventSourcedAggregateRoot
         int $amount,
         int $type,
         string $title,
-        \DateTime $dateTime)
-    {
+        \DateTime $dateTime
+    ) {
+
         $transaction = new self();
         $transaction->apply(new TransactionWasAddedEvent(
             $transactionId,
@@ -58,7 +62,7 @@ class Transaction extends EventSourcedAggregateRoot
 
     public function applyTransactionTitleWasChangedEvent(
         TransactionTitleWasChangedEvent $transactionTitleWasChanged
-    ){
+    ) {
         $this->transactionId = $transactionTitleWasChanged->getTransactionId();
         $this->userId = $transactionTitleWasChanged->getUserId();
         $this->title = $transactionTitleWasChanged->getTitle();

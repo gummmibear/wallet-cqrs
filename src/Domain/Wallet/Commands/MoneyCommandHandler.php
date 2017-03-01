@@ -53,9 +53,9 @@ class MoneyCommandHandler extends AbstractMoneyCommandHandler
 
     public function createTransaction(MoneyCommand $command)
     {
-        $type = 1;
+        $type = Transaction::INCOME_TYPE;
         if ($command instanceof SubMoneyCommand) {
-            $type = -1;
+            $type = Transaction::OUTCOME_TYPE;
         }
         $transaction = Transaction::create(
             $command->getTransactionId(),
