@@ -4,6 +4,7 @@ namespace App\Action;
 
 use Domain\Wallet\Commands\AddMoneyCommand;
 use Domain\Wallet\Commands\SubMoneyCommand;
+use Domain\Wallet\Helper\MoneyHelper;
 use Domain\Wallet\ReadModel\Transaction;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -16,32 +17,20 @@ class AddTransactionAction extends AbstractAction
         $json = $request->getAttribute('json');
         $userId = $request->getAttribute('userId');
 
-        if ((int)$json->type == Transaction::INCOME_TYPE) {
-            $command = new AddMoneyCommand(
-                uniqid(),
-                $userId,
-                $json->amount * 100,
-                $json->title
-            );
-            $this->commandBus->dispatch($command);
-        }
+        $moneyCommand = MoneyCommandFactory::create(
+            $userId,
+            (int)$json->type,
+            MoneyHelper::toInt($json->amount),
+            $json->title
+        );
 
-        if ((int)$json->type == Transaction::OUTCOME_TYPE) {
-            $command = new SubMoneyCommand(
-                uniqid(),
-                $userId,
-                $json->amount * 100,
-                $json->title
-            );
-
-            $this->commandBus->dispatch($command);
-        }
+        $this->commandBus->dispatch($moneyCommand);
 
         return new JsonResponse([
             self::COMMAND => [
-                self::TRANSACTION_ID => $command->getTransactionId(),
-                self::AMOUNT => $command->getAmount(),
-                self::TITLE => $command->getTitle()
+                self::TRANSACTION_ID => $moneyCommand->getTransactionId(),
+                self::AMOUNT => $moneyCommand->getAmount(),
+                self::TITLE => $moneyCommand->getTitle()
             ]
         ]);
     }

@@ -16,31 +16,37 @@ class ChangeTransactionAction extends AbstractAction
         $json = $request->getAttribute('json');
         $transactionId = $request->getAttribute('transactionId');
 
+        $commands = [];
+
         if ($json->title) {
-            $transactionTitleChangeCommand = new TransactionTitleChangeCommand(
+            $commands[] = new TransactionTitleChangeCommand(
                 $transactionId,
                 $json->userId,
                 $json->title
             );
-            $this->commandBus->dispatch($transactionTitleChangeCommand);
         }
 
         if ($json->amount) {
-            $transactionAmountChangeCommand = new TransactionAmountChangeCommand(
+            $commands[] = new TransactionAmountChangeCommand(
                 $transactionId,
                 $json->userId,
                 $json->amount * 100
             );
-            $this->commandBus->dispatch($transactionAmountChangeCommand);
         }
         if ($json->dateTime) {
-            $transactionDateChangeCommand = new TransactionDateChangeCommand(
+            $commands[] = new TransactionDateChangeCommand(
                 $transactionId,
                 $json->userId,
                 new \DateTime($json->dateTime)
             );
+        }
 
-            $this->commandBus->dispatch($transactionDateChangeCommand);
+        if (empty($commands)) {
+            throw new \Exception('Nothing to edi');
+        }
+
+        foreach ($commands as $cmd) {
+            $this->commandBus->dispatch($cmd);
         }
 
         return new JsonResponse([
